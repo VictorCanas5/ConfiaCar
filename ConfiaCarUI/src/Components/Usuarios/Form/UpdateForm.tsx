@@ -8,8 +8,9 @@ import StepperComponent from "../../../global/Componentes/ScriptsStepper/Steper"
 import TextComponent from "../../../global/Componentes/TextComponent.tsx/TextComponent";
 import CheckComponent from "../../../global/Componentes/CheckComponent.tsx/CheckComponent";
 import CheckComponent2 from "../../../global/Componentes/CheckComponent.tsx/CheckComponent2";
+import { AutocompleteField } from "../../../global/Componentes/AutoCompleteField/AutoComplete";
 import Swal from 'sweetalert2';
-
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 type FormType = {
   Jwt:string,
@@ -43,9 +44,18 @@ const UpdateForm = (props: FormType) => {
 
 
   useEffect(() => {
+    console.log(props.data);
+    
   }, [])
   const steps = ['Datos personales', 'Datos adicionales']
-
+  const options =  [
+    { 
+      value: 1, label: `COMPRADOR` 
+    },
+    {
+      value: 2, label: `VENDEDOR` 
+    }
+]
 
   return (
     <Formik
@@ -95,11 +105,12 @@ const UpdateForm = (props: FormType) => {
               const nuevoNombre = `${values.nombre} ${values.apellidoPaterno} ${values.apellidoMaterno}`;
 
               return {
-                  ...item,
+                  ...item, 
                   masterUser: values.Master,
                   correoElectronico: values.Correo,
                   telefono: values.celular,
                   nombreCompleto: nuevoNombre, 
+                  rolID: values.rolID
               };
           }
           return item;
@@ -107,6 +118,8 @@ const UpdateForm = (props: FormType) => {
 
       props.setData(newDataUsuarios);
 
+      
+      
 
         Funciones.UpdateUsuario(props.Jwt,values)
         .then((res:any) => {
@@ -138,7 +151,7 @@ const UpdateForm = (props: FormType) => {
 
       }}
     >
-
+      
       {({ values, handleSubmit }) => (
         <Modal
           
@@ -185,6 +198,13 @@ const UpdateForm = (props: FormType) => {
                     <div style={{ display: "flex", flexDirection:'column',justifyContent: 'space-between' }}>
                       <TextComponent id={"Correo"} name={"Correo"} DefaultValue={undefined} type={"text"}/>
                       <TextComponent id={"Numero celular"} name={"celular"} DefaultValue={undefined} type={"text"}/>
+                      <AutocompleteField
+                      id={"rolID"}
+                      name={"rolID"}
+                      label="Rol Usuario" 
+                      defaultValue={{ value: 0, nombreCompleto: "", label: "Selecciona un rol" }}
+                      Data={options}
+                      />
                       <div style={{display:'flex', justifyContent:'center', margin:'1rem'}}>
                           <CheckComponent2 name="Master" label="Master" values={props.Form.Master} />
                       </div>

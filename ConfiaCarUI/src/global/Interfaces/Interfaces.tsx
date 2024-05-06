@@ -14,7 +14,7 @@ export interface ColumnTypeI2  {
     options?: {
         filter?: boolean;
         customBodyRenderLite?: (dataIndex: number) => JSX.Element;
-        customBodyRender?: (_value: any, tableMeta: { rowIndex: number, rowData: any[] }) => JSX.Element;
+        customBodyRender?: (_value: any, tableMeta: { rowIndex: number, rowData: any[], tableData: any[] }) => JSX.Element;
       };
 };
 

@@ -1,33 +1,23 @@
 import {
   Paper,
   TableContainer,
-  IconButton,
-  Fab,
   Skeleton,
   Stack,
+  Typography,
+  Breadcrumbs,
+  Button
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useState, useEffect } from "react";
 import * as Funciones from "./Funciones";
-import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-//import UpdateForm from "./Form/UpdateForm";
-import AddIcon from "@mui/icons-material/Add";
-import CameraIcon from "@mui/icons-material/Camera";
-import UploadImageComponent from "../../global/Componentes/UploadImagenComponent/UploadImageComponent";
-import Swal from "sweetalert2";
+import { Create } from "@mui/icons-material";
+import UpdateForm from "./Form/UpdateForm";
+
 import {
-  ColumnTypeI,
-  optionsI,
   optionsTypeI,
   ColumnTypeI2,
 } from "../../global/Interfaces/Interfaces";
-import ArticleIcon from "@mui/icons-material/Article";
-import CarRepairIcon from "@mui/icons-material/CarRepair";
-import CarCrashIcon from "@mui/icons-material/CarCrash";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import Tooltip from "@mui/material/Tooltip";
+import DocsForm from "./Form/DocsForm";
 
 type ValuadoresType = {
   jwt: string;
@@ -61,6 +51,8 @@ const Vehiculos = (props: ValuadoresType) => {
     },
   });
   const [mostrar, setMostrar] = useState<boolean>(false);
+  const [mostrar2, setMostrar2] = useState<boolean>(false);
+  const [vehiculoID, setVehiculoID] = useState<any>()
   // const [Data, setData] = useState<any>([])
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -103,6 +95,13 @@ const Vehiculos = (props: ValuadoresType) => {
     }));
     setUsuarioID(0);
   };
+
+  const fnSetDatosVh = (data: any) =>{
+      const VehiculoID : any = DataVehiculos.find((vehiculo: any)=> vehiculo.vehiculoID === data.rowData[0])
+
+      setVehiculoID(VehiculoID.vehiculoID)
+      
+  }
 
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -175,9 +174,9 @@ const Vehiculos = (props: ValuadoresType) => {
   const Columns: ColumnTypeI2[] = [
     {
       name: "vehiculoID",
-      label: "Id",
+      label: "ID",
     },
-    {
+    /* {
       name: "documentoID",
       label: "Doc",
       options: {
@@ -200,7 +199,7 @@ const Vehiculos = (props: ValuadoresType) => {
           );
         },
       },
-    },
+    }, */
     {
       name: "marca",
       label: "Marca",
@@ -214,147 +213,70 @@ const Vehiculos = (props: ValuadoresType) => {
       label: "Año",
     },
     {
-      name: "FechaUltimoMantenimiento",
-      label: "Mantenimiento",
-      options: {
-        filter: true,
-        customBodyRender: (_value: any, tableMeta: { rowData: any }) => {
-          return (
-            <>
-              {_value == undefined ? (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <span>00/00/00</span>
-                  <Tooltip title="Nuevo Mantenimiento" placement="top">
-                    <AddCircleOutlineIcon
-                      color="success"
-                      style={{
-                        width: "15px",
-                        cursor: "pointer",
-                        marginLeft: "5px",
-                      }}
-                    ></AddCircleOutlineIcon>
-                  </Tooltip>
-                </div>
-              ) : (
-                <CarRepairIcon
-                  onClick={() => {
-                    setMostrar(false);
-                    fnSetDatosUsuario(_value, tableMeta);
-                  }}
-                  aria-label="delete"
-                  color="primary"
-                >
-                  <AutoFixHighIcon />
-                </CarRepairIcon>
-              )}
-            </>
-          );
-        },
-      },
+      name: "precioCompra",
+      label: "Precio de Compra",
     },
     {
-      name: "polizaID",
-      label: "Poliza",
-      options: {
-        filter: true,
-        customBodyRender: (_value: any, tableMeta: { rowData: any }) => {
-          return (
-            <>
-              {_value == undefined ? (
-                <>
-                  <span>Sin poliza</span>
-                  <AddCircleOutlineIcon
-                    color="success"
-                    style={{
-                      width: "15px",
-                      cursor: "pointer",
-                      marginLeft: "5px",
-                    }}
-                  ></AddCircleOutlineIcon>
-                </>
-              ) : (
-                <Tooltip title="Poliza de seguro" placement="top">
-                  <CarCrashIcon
-                    onClick={() => {
-                      setMostrar(false);
-                      fnSetDatosUsuario(_value, tableMeta);
-                    }}
-                    style={{ cursor: "pointer" }}
-                    aria-label="delete"
-                    color="primary"
-                  ></CarCrashIcon>
-                </Tooltip>
-              )}
-            </>
-          );
-        },
-      },
+      name: "precioVenta",
+      label: "Precio de Venta",
     },
     {
-      name: "vehiculoID",
-      label: "Fotos Vehiculo",
-      options: {
-        filter: true,
-        customBodyRender: (_value: any, tableMeta: { rowData: any }) => {
-          return (
-            <>
-              {_value > 0 ? (
-                <span>Sin Fotos</span>
-              ) : (
-                <DirectionsCarIcon
-                  onClick={() => {
-                    setMostrar(false);
-                    fnSetDatosUsuario(_value, tableMeta);
-                  }}
-                  aria-label="delete"
-                  color="primary"
-                ></DirectionsCarIcon>
-              )}
-            </>
-          );
-        },
-      },
+      name: "numeroSerie",
+      label: "Numero de Serie",
+    },
+    {
+      name: "placas",
+      label: "Placas",
+    },
+    {
+      name: "color",  
+      label: "Color",
     },
     {
       name: "kilometraje",
       label: "Kilometraje",
     },
     {
-      name: "precioCompra",
-      label: "Precio Compra",
+      name: "transmision",
+      label: "Transmisión",
     },
     {
-      name: "precioVenta",
-      label: "Precio Venta",
+      name: "noPuertas",
+      label: "No. de puertas",
     },
-    // {
-    //   name: "disponibilidad",
-    //   label: "Disponibilidad",
-    //   options: {
-    //     filter: true,
-    //     customBodyRenderLite: (dataIndex: number) => {
-    //       const state = DataVehiculos[dataIndex].disponibilidad;
-    //       if (state == true) {
-    //         return (
-    //           <div className="operating">
-    //             <strong style={{ color: "green" }}>DISPONIBLE</strong>
-    //           </div>
-    //         );
-    //       } else {
-    //         return (
-    //           <div className="maintenance">
-    //             <strong style={{ color: "red" }}>NO DISPONIBLE</strong>
-    //           </div>
-    //         );
-    //       }
-    //     },
-    //   },
-    // },
+    {
+      name: "estado",
+      label: "Estado",
+    },
+    {
+      name: "procedencia",
+      label: "Procedencia",
+    },
+    {
+      name: "observaciones",
+      label: "Observaciones",
+    },
+  
+    {
+      name: "datosVehiculo",
+      label: "Documentos",
+      options: {
+        filter: true,
+        customBodyRender: (_value: any, tableMeta: { rowData: any }) => {
+         
+          
+          
+          
+          return (
+            <>
+              <Button variant="contained" color="primary" onClick={()=>{
+                setMostrar2(!mostrar2); fnSetDatosVh(tableMeta)
+                }} >Abrir</Button>
+            </>
+          );
+        },
+      },
+    },
   ];
 
   const fnCerrar = () => {
@@ -372,36 +294,24 @@ const Vehiculos = (props: ValuadoresType) => {
       style={{ width: "100%", height: "95%" }}
     >
       <TableContainer style={{ width: "100%", height: "90%" }}>
-        {!loading && (
-          <div
-            style={{
-              backgroundColor: "rgb(241 241 241)",
-              paddingBottom: "1rem",
-              paddingTop: "1rem",
-              margin: "1.5rem",
-              borderRadius: "1rem",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "2rem",
-                margin: "1rem",
-                fontFamily: "sans-serif",
-              }}
-            >
-              <strong
-                style={{
-                  fontSize: "2rem",
-                  margin: "1rem",
-                  fontFamily: "sans-serif",
-                }}
-              >
-                Vehiculos
-              </strong>
-            </div>
-            <button>Nuevo Vehiculo</button>
-          </div>
-        )}
+        {!loading &&
+                <div style={{ backgroundColor: 'white', paddingBottom: '1rem', paddingTop: '1rem', margin: '1.5rem', borderRadius: '1rem' }}>
+                    <Typography style={{fontSize: '2rem', margin: '1rem', fontFamily: 'sans-serif', display:'inline-block'}} variant="h1" gutterBottom>Catalogo de Vehiculos 
+                        <Breadcrumbs style={{float: 'right', display:'flex', padding:'10pt', marginTop: '-3pt' ,marginLeft: '10pt', borderRadius: '10pt' ,backgroundColor: 'rgb(241 241 241)'}} aria-label="breadcrumb">
+                            <Typography>Inicio</Typography> 
+                            <Typography>Consultar</Typography> 
+                        </Breadcrumbs>
+                    </Typography>
+                        <div style={{ margin: '0.4rem', paddingLeft:'12pt' ,display: 'flex', justifyContent: 'space-between' }}> 
+                            
+                               {/*  <Fab onClick={() => fnAgregar()} color="primary" aria-label="add">
+                                    <AddIcon />
+                                </Fab> */}
+                                <Button onClick={() => fnAgregar()} style={{backgroundColor:'#03294a'}} variant="contained" startIcon={<Create />}>Vehiculo Nuevo</Button>
+                            
+                        </div>
+                </div>
+                }
 
         {!loading && (
           <div
@@ -439,18 +349,30 @@ const Vehiculos = (props: ValuadoresType) => {
           </Stack>
         )}
 
-        {/* {mostrar && (
+        {mostrar && (
           <UpdateForm
             UsuarioID={UsuarioID}
             fnCerrar={fnCerrar}
             Mostrar={mostrar}
+            onClose={()=>setMostrar(!mostrar)}
+            Jwt={props.jwt}
             // Usuarios={GetUsuarios}
             Form={state.Form}
             GetLocal={undefined}
             setData={setDataVehiculos}
             data={DataVehiculos}
           />
-        )} */}
+        )}
+        {mostrar2 && (
+            <DocsForm
+               
+                Mostrar={mostrar2}
+                onClose={()=>setMostrar2(!mostrar2)}
+                Jwt={props.jwt}
+                VehiculoID={vehiculoID}
+                
+            />
+         )}
       </TableContainer>
     </Paper>
   );

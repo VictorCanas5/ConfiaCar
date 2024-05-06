@@ -30,12 +30,15 @@ export const InsertUsuario = (Jwt:string, Valores: {
 
     }): Promise<DBConfiaCar_Seguridad.IUsuarios[]>=>
     new Promise((resolver: any, Denegar: any) => {
+      
+      
         axios.post<DBConfiaCar_Seguridad.IUsuarios>(`${GetServerUrl()}Users/InsertUsers`, Valores,{
             headers: {
               'Authorization': `Bearer ${Jwt}`
             }
           })
         .then((res: AxiosResponse<DBConfiaCar_Seguridad.IUsuarios>) => {
+          
                 resolver(res);
 
             }).catch(err => {
@@ -44,16 +47,18 @@ export const InsertUsuario = (Jwt:string, Valores: {
 })
 
 
-export const UpdateUsuario = (Jwt:string, Valores: {  
-    id:number,
-    nombre: string,
-    apellidoPaterno: string,
-    apelidoMaterno: string,
-    Correo: string,
-    celular: number,
-    Estado: boolean
+export const UpdateUsuario = (Jwt:string, Valores: {   
+  id: number                                  
+  nombre: string,
+  apaterno: string,
+  amaterno: string,
+  email: string,
+  celular: number,
+  rolID: number,
+  Estado: boolean,
+  
 
-}): Promise<DBConfiaCar_Seguridad.IUsuarios[]>=>
+  }): Promise<DBConfiaCar_Seguridad.IUsuarios[]>=>
 new Promise((resolver: any, Denegar: any) => {
     axios.post<DBConfiaCar_Seguridad.IUsuarios>(`${GetServerUrl()}Users/UpdateUsuario`, Valores,{
         headers: {

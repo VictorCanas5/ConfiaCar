@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "keycloak-js": "^24.0.3",
-    "react-redux": "^9.1.1",
-    "redux": "^5.0.1"
-  }
-}

@@ -219,7 +219,7 @@ namespace __NAMESPACE__.__DATABASE__
             var sqlConnection = new SqlConnection(connectionString);
             // Open the NPoco connection
             sqlConnection.Open();
-            return new DBConfiaCarContext(new NPoco.Database(sqlConnection));
+            return new ConfiaCarContext(new NPoco.Database(sqlConnection));
         }
 
         public async Task Destroy()

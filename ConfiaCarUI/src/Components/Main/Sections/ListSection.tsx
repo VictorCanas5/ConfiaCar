@@ -3,29 +3,18 @@ import { Collapse, Divider, IconButton, List, ListItem, ListItemButton, ListItem
 import { useState, useContext, useEffect } from "react";
 import { Link, NavigateFunction } from "react-router-dom";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import AddCardIcon from '@mui/icons-material/AddCard';
-import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import InventoryIcon from '@mui/icons-material/Inventory';
 import StyleIcon from '@mui/icons-material/Style';
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
-import DvrIcon from '@mui/icons-material/Dvr';
 import PeopleIcon from '@mui/icons-material/People';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import SettingsCellIcon from '@mui/icons-material/SettingsCell';
-import PaidIcon from '@mui/icons-material/Paid';
-import StoreIcon from '@mui/icons-material/Store';
 import { AuthContext } from "../../../Auth/context";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { useNavigate } from "react-router-dom";
-import SummarizeIcon from '@mui/icons-material/Summarize';
-import CalculateIcon from '@mui/icons-material/Calculate';
-import PercentIcon from '@mui/icons-material/Percent';
+import { Shield } from "@mui/icons-material";
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import BuildIcon from '@mui/icons-material/Build';
-import ArticleIcon from '@mui/icons-material/Article';
+
+
 
 type TypeSucursales = {
     // jwt: string
@@ -102,8 +91,6 @@ const Listaelementos: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) =
 
             <Collapse in={open} timeout="auto" unmountOnExit>
 
-                {isMaster && 
-
                 <List disablePadding>
                     <Link to="vendedores" style={{ textDecoration: 'none', display: 'block', color: 'white' }}>
                         <ListItem button><ManageAccountsIcon><StarBorder /></ManageAccountsIcon>
@@ -113,17 +100,11 @@ const Listaelementos: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) =
 
                 </List>
 
-                }
-
-                {isMaster && 
-
                 <Link to="clientes" style={{ textDecoration: 'none', display: 'block', color: 'white' }}>
                         <ListItem button><PeopleIcon><StarBorder /></PeopleIcon>
                             <ListItemText primary="Clientes" />
                         </ListItem>
                 </Link>
-
-                }
 
                 <Link to="vehiculos" style={{ textDecoration: 'none', display: 'block', color: 'white' }}>
                         <ListItem button><DirectionsCarIcon><StarBorder /></DirectionsCarIcon>
@@ -131,49 +112,29 @@ const Listaelementos: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) =
                         </ListItem>
                 </Link>
 
-                {isMaster && 
-
-                <Link to="documentacion" style={{ textDecoration: 'none', display: 'block', color: 'white' }}>
-                        <ListItem button><ArticleIcon><StarBorder /></ArticleIcon>
-                            <ListItemText primary="Documentacion" />
+                <Link to="seguros" style={{ textDecoration: 'none', display: 'block', color: 'white' }}>
+                        <ListItem button><Shield />
+                            <ListItemText primary="Seguros" />
                         </ListItem>
                 </Link>
-
-                }
-
-                {isMaster && 
-
-                <Link to="talleres" style={{ textDecoration: 'none', display: 'block', color: 'white' }}>
-                        <ListItem button><BuildIcon><StarBorder /></BuildIcon>
-                            <ListItemText primary="Talleres" />
-                        </ListItem>
-                </Link>
-                
-                }
 
             </Collapse>
 
         <Divider />
-
-        {isMaster && 
         
         <ListItem disablePadding style={{ marginBottom: '15px', display: 'block' }} >
 
-            <Link to="ventas" style={{ textDecoration: 'none', display: 'block', color: 'white' }}>
+            <Link to="pagos" style={{ textDecoration: 'none', display: 'block', color: 'white' }}>
                 <MenuItem>
                     <AttachMoneyIcon>
                         <ContentPaste fontSize="small" />
                     </AttachMoneyIcon>
-                    <ListItemText>Ventas</ListItemText>
+                    <ListItemText>Pagos</ListItemText>
                 </MenuItem>
             </Link>
         </ListItem>
 
-        }
-
         <Divider />
-
-        {isMaster && 
 
             <><ListItemButton onClick={handleClick2}>
                             <div style={{ display: 'flex', alignItems: 'center', color: '#fff' }}>
@@ -202,7 +163,6 @@ const Listaelementos: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) =
                             </List>
 
                         </Collapse></>
-        }
         <Divider />
         </List>
 

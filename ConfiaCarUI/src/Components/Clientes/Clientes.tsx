@@ -1,4 +1,4 @@
-import { Paper, TableContainer, IconButton, Fab, Skeleton, Stack, Typography, Breadcrumbs, Button } from "@mui/material";
+import { Paper, TableContainer, IconButton, Fab, Skeleton, Stack } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useState, useEffect } from "react";
 import * as Funciones from "./Funciones";
@@ -10,7 +10,6 @@ import UploadImageComponent from "../../global/Componentes/UploadImagenComponent
 import Swal from 'sweetalert2';
 import { ColumnTypeI, optionsI, optionsTypeI, ColumnTypeI2 } from "../../global/Interfaces/Interfaces";
 import { DBConfiaCar_General } from "../../interfaces_db/DBConfiaCar/General";
-import { Create } from "@mui/icons-material";
 
 
 
@@ -32,10 +31,13 @@ interface stateInterface {
             rfc: string,
             sexoID: string,
             estadoCivilID: string,
+            escolaridadID: number,
             ingresosMensuales: number,
             telefonoDomicilio: string,
-            correoElectronico: string,
+            Correo: string,
             telefonoMovil: string,
+            identificacionNumero: string,
+            observaciones: string,
             buroInternoEstatusID: number,
             bloqueadoCliente: boolean
         }
@@ -49,7 +51,7 @@ const Clientes = (props: ClientesType) => {
     const [state, setState] = useState<stateInterface>({
         Form:
         {
-                idCliente: 0,
+            idCliente: 0,
                 nombre: "",
                 apellidoPaterno: "",
                 apellidoMaterno: "",
@@ -59,10 +61,13 @@ const Clientes = (props: ClientesType) => {
                 rfc: "",
                 sexoID: "",
                 estadoCivilID: "",
+                escolaridadID: 0,
                 ingresosMensuales: 0,
                 telefonoDomicilio: "",
-                correoElectronico: "",
+                Correo: "",
                 telefonoMovil: "",
+                identificacionNumero: "",
+                observaciones: "",
                 buroInternoEstatusID: 0,
                 bloqueadoCliente: false
         }
@@ -107,10 +112,13 @@ const Clientes = (props: ClientesType) => {
                 rfc: "",
                 sexoID: "",
                 estadoCivilID: "",
+                escolaridadID: 0,
                 ingresosMensuales: 0,
                 telefonoDomicilio: "",
-                correoElectronico: "",
+                Correo: "",
                 telefonoMovil: "",
+                identificacionNumero: "",
+                observaciones: "",
                 buroInternoEstatusID: 0,
                 bloqueadoCliente: false
 
@@ -139,10 +147,13 @@ const Clientes = (props: ClientesType) => {
                     rfc: cliente.rfc,
                     sexoID: cliente.sexoID,
                     estadoCivilID: cliente.estadoCivilID,
+                    escolaridadID: cliente.escolaridadID,
                     ingresosMensuales: cliente.ingresosMensuales,
                     telefonoDomicilio: cliente.telefonoDomicilio,
                     telefonoMovil: cliente.telefonoMovil,
-                    correoElectronico: cliente.correoElectronico,
+                    identificacionNumero: cliente.identificacionNumero,
+                    observaciones: cliente.observaciones,
+                    Correo: cliente.correoElectronico,
                     buroInternoEstatusID: cliente.buroInternoEstatusID,
                     bloqueadoCliente: cliente.bloqueadoCliente
                 }
@@ -224,7 +235,7 @@ const Clientes = (props: ClientesType) => {
         },
         {
             name: 'telefonoMovil',
-            label: 'Telefono Movil'
+            label: 'Telefono'
         },
         {
             name: 'telefonoDomicilio',
@@ -249,6 +260,10 @@ const Clientes = (props: ClientesType) => {
         {
             name: 'estadoCivilID',
             label: 'Estado Civil'
+        },
+        {
+            name: 'escolaridadID',
+            label: 'Escolaridad'
         },
         {
             name: 'ingresosMensuales',
@@ -276,33 +291,29 @@ const Clientes = (props: ClientesType) => {
     return (
         <Paper className="animate__animated animate__fadeInRight" style={{ width: '100%', height: '95%' }}>
         <TableContainer style={{ width: '100%', height: '90%' }}>
-                  
-                {!loading &&
-
-                    <div style={{ backgroundColor: 'white', paddingBottom: '1rem', paddingTop: '1rem', margin: '1.5rem', borderRadius: '1rem' }}>
-
-                        <Typography style={{fontSize: '2rem', margin: '1rem', fontFamily: 'sans-serif', display:'inline-block'}} variant="h1" gutterBottom>Clientes 
-                            <Breadcrumbs style={{float: 'right', display:'flex', padding:'10pt', marginTop: '-3pt' ,marginLeft: '10pt', borderRadius: '10pt' ,backgroundColor: 'rgb(241 241 241)'}} aria-label="breadcrumb">
-                                <Typography>Clientes</Typography> 
-                                <Typography>Consultar</Typography> 
-                            </Breadcrumbs>
-                        </Typography>
-
-                        <div style={{ margin: '0.4rem', paddingLeft:'12pt' ,display: 'flex', justifyContent: 'space-between' }}> 
-                            <Button onClick={() => fnAgregar()} style={{backgroundColor:'#03294a'}} variant="contained" startIcon={<Create />}>Crear Cliente</Button>
+                  {!loading &&
+                    <div style={{ backgroundColor: 'rgb(241 241 241)', paddingBottom: '1rem', paddingTop: '1rem', margin: '1.5rem', borderRadius: '1rem' }}>
+                        <div style={{ fontSize: '2rem', margin: '1rem', fontFamily: 'sans-serif' }}>
+                            <strong style={{ fontSize: '2rem', margin: '1rem', fontFamily: 'sans-serif' }}>Clientes</strong>
                         </div>
-
+                        <div style={{ margin: '2rem', display: 'flex', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex' }}>
+                            </div>
+                            <div>
+                                <Fab onClick={() => fnAgregar()} color="primary" aria-label="add">
+                                    <AddIcon />
+                                </Fab>
+                            </div>
+                        </div>
                     </div>
                 }
 
                 {!loading &&
-                    <div style={{ marginLeft: '2rem',marginRight: '2rem', height: '80%', paddingLeft: 0, paddingRight: 0 }}>
-                        <MUIDataTable 
-                            columns={Columns}
+          <div style={{ marginLeft: '2rem',marginRight: '2rem', height: '80%', paddingLeft: 0, paddingRight: 0 }}>
+          <MUIDataTable columns={Columns}
                             data={Data}
                             title={"Usuarios"}
-                            options={options} 
-                        />
+                            options={options} />
                     </div>
                 }
                 {loading &&

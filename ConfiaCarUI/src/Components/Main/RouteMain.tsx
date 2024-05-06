@@ -11,11 +11,7 @@ import jwtDecode from 'jwt-decode';
 import axios, { AxiosResponse } from 'axios';
 import { GetServerUrl } from '../../global/variables';
 import Vehiculos from '../Vehiculos/Vehiculos';
-import Talleres from '../Talleres/Talleres';
-import Documentacion from '../Documentacion/Documentacion';
-import Ventas from '../Ventas/Ventas';
-
-
+import Seguros from '../Seguros/Seguros'
 
 const RoutesApp = () => {
     const navigate: NavigateFunction = useNavigate();
@@ -150,17 +146,14 @@ const RoutesApp = () => {
                     <MainSideBar />
                     <div className='ContenTable' >
                             <Routes>
-
+                        
                                 <Route path="vendedores" element={<Vendedores jwt={Jwt ? Jwt : ''}/>} />
                                 <Route path="clientes" element={<Clientes jwt={Jwt ? Jwt : ''} />} />
                                 <Route path="usuarios" element={<Usuarios jwt={Jwt ? Jwt : ''} />} />
                                 <Route path="vehiculos" element={<Vehiculos jwt={Jwt ? Jwt : ''} />} />
-                                <Route path="talleres" element={<Talleres jwt={Jwt ? Jwt : ''} />} />
-                                <Route path="documentacion" element={<Documentacion jwt={Jwt ? Jwt : ''} />} />
-
-                                <Route path="ventas" element={<Ventas jwt={Jwt ? Jwt : ''} />} />
-
-                                <Route path="/" element={<Navigate to="/login" />} /> 
+                                <Route path="seguros" element={<Seguros jwt={Jwt ? Jwt : ''} />} />
+                                
+                                <Route path="/" element={<Navigate to="/login" />} />
                             </Routes>
                     </div>
                 </div>

@@ -32,6 +32,7 @@ interface stateInterface {
             Master: boolean;
             rolID: number;
         }
+    update: boolean
   }
 
   interface Usuario {
@@ -62,7 +63,8 @@ const Usuarios = (props: UsuariosType) => {
             celular: 0,
             Master: false,
             rolID: 0,
-        }
+        },
+        update : false
     })
     const [mostrar, setMostrar] = useState<boolean>(false)
     const [Data, setData] = useState<Usuario[]>([]); 
@@ -146,7 +148,8 @@ const Usuarios = (props: UsuariosType) => {
 
     const fnSetDatosUsuario = (value: any, tableMeta: any) => {
         const usuario = Data.find((usuario: any) => usuario.usuarioID === tableMeta.rowData[0]);
-    
+        console.log(usuario);
+        
         if (usuario) {
             setState((prevState) => ({
                 ...prevState,
@@ -159,12 +162,14 @@ const Usuarios = (props: UsuariosType) => {
                     celular: usuario.telefono,
                     Correo: usuario.correoElectronico,
                     Master: usuario.masterUser,
-                    rolId: usuario.rolID
-                }
+                    rolID: usuario.rolID
+                },
+                update: true
             }));
-    
+            
             setUsuarioID(tableMeta.rowData[0]);
             setMostrar(true);
+            
         }
     };
     
@@ -272,6 +277,8 @@ const Usuarios = (props: UsuariosType) => {
             options: {
                 filter: true,
                 customBodyRender: (_value: any, tableMeta: { rowData: any; }) => {
+                 
+                    
                     return (
                             <IconButton onClick={() => { setMostrar(true)
                                 fnSetDatosUsuario(_value, tableMeta) }} aria-label="delete" color="primary">
@@ -372,8 +379,16 @@ const Usuarios = (props: UsuariosType) => {
                 {mostrar &&
                     
                     <Form
-                    Mostrar={mostrar}
-                    onClose={()=>setMostrar(!mostrar)}
+                        Mostrar={mostrar}
+                        onClose={()=>setMostrar(!mostrar)}
+                        Jwt={props.jwt}
+                        UsuarioID={UsuarioID}
+                        Usuarios={GetUsuarios}
+                        Form={state.Form}
+                        Update={state.update} 
+                        setUpdate={setState}
+                        setData={setData}
+                        data={Data}
                     />
                 }
                 

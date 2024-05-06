@@ -1,7 +1,0 @@
-[
-  {
-    "Cs": "Server=192.168.1.139;Database=DBConfiaCar;Trusted_Connection=False;User=userCV139;Password='Confia2024$.'",
-    "Namespace": "DBContext",
-    "Db": "DBConfiaCar"
-  }
-]

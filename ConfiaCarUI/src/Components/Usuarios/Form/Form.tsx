@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dialog, 
          DialogContent, 
          Grid, 
@@ -17,6 +17,7 @@ import { grey } from "@mui/material/colors";
 import { useFormik } from "formik";
 import * as Yup from 'yup'
 import * as Funciones from '../Funciones'
+import Swal from "sweetalert2";
 
 function Form(props: any) {
     
@@ -57,10 +58,30 @@ const styles = {
     celular: Yup.number().typeError('Debe ser un número').required('Campo obligatorio').positive('Debe ser un número positivo').integer('Debe ser un número entero'),
     rolID: Yup.string().required("Campo obligatorio"),
   })
+  useEffect(() => {
+      if(props.Update){
+          console.log(props.data);
+         const user = props.data.find((a: any)=> a.usuarioID == props.UsuarioID)
+         console.log(user);
+         formik.values.nombre = user.nombre
+         formik.values.apaterno= user.apellidoPaterno
+         formik.values.amaterno= user.apellidoMaterno
+         formik.values.email = user.correoElectronico
+         formik.values.celular = user.telefono
+         formik.values.rolID = user.rolID
+         formik.values.Estado = user.masterUser
+         console.log(formik.values.email);
+         props.setUpdate((prev: any)=>({
+          ...prev,
+          update: false
+      }))
+      }
+  }, [])
   
   
     const formik = useFormik({
       initialValues: {
+        id: props.UsuarioID,
         nombre: '',
         apaterno: '',
         amaterno: '',
@@ -71,10 +92,91 @@ const styles = {
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
-        Funciones.InsertUsuario(props.Jwt,values)
+        
         console.log("Submit:", values); 
-        alert(JSON.stringify(values, null, 2));
-        onClose();
+       
+        
+        if(props.UsuarioID == 0){
+        
+          console.log("estos son los valores:", values)
+          Funciones.InsertUsuario(props.Jwt,values)
+          .then((res:any) => {
+              props.Usuarios();
+              
+              Swal.fire({
+                position: "center",       
+                icon: "success",
+                title: "El usuario a sido insertado con exito",
+                showConfirmButton: false,
+                timer: 1000
+              });
+              onClose();
+
+          })
+          .catch((err:any) => {
+            console.log(err);
+            onClose();
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Ya existe un usuario registrado con este correo",
+                showConfirmButton: false,
+                timer: 1000
+            });
+          })
+          console.log("se esta creando un usuario")
+      }
+      else{
+
+
+        const newDataUsuarios = props.data.map((item: any) => {
+          if (item.usuarioID === props.UsuarioID) {
+              const nuevoNombre = `${values.nombre} ${values.apaterno} ${values.amaterno}`;
+
+              return {
+                  ...item, 
+                  masterUser: values.Estado,
+                  correoElectronico: values.email,
+                  telefono: values.celular,
+                  nombreCompleto: nuevoNombre, 
+                  rolID: values.rolID
+              };
+          }
+          return item;
+        });
+
+      props.setData(newDataUsuarios);
+
+      
+      
+
+        Funciones.UpdateUsuario(props.Jwt,values)
+        .then((res:any) => {
+             props.Usuarios();
+            
+            Swal.fire({
+              position: "center",       
+              icon: "success",
+              title: "el usuario a sido actualizado con exito",
+              showConfirmButton: false,
+              timer: 1000
+            });
+            onClose();
+            
+        })
+        .catch((err:any) => {
+            console.log(err)
+            Swal.fire({
+              position: "center",       
+              icon: "error",
+              title: "algo salio mal",
+              showConfirmButton: false,
+              timer: 1000
+            });
+            onClose();
+        })
+        
+       }
       },
     });
 
@@ -218,7 +320,7 @@ const styles = {
                   fullWidth
                   margin="dense"
                   variant="outlined"
-                  type="number"
+                  type="text"
                   label="Numero De Celular"
                   id="celular"
                   name="celular"
