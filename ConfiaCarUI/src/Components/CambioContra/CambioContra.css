@@ -1,0 +1,14 @@
+.contenedor_elementos_seleccionar_sucursal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.propiedadesDimensionesModalSucursales{
+    width: 60%;
+}
+
+.propiedadesForm{
+    width: 100%;
+    height: 90%;
+}
