@@ -1,0 +1,89 @@
+.propiedadesSucursal{
+    color: #FFFFFF;
+    display: flex;
+}
+
+.propiedadesSucursal:hover{
+    cursor: pointer;
+    display: flex;
+    color:'#2AC194'
+}
+
+.propiedadesSucursalSidebar{
+    color: #FFFFFF;
+    display: none;
+    justify-content: center;
+}
+
+.propiedadesUsuarioSidebar{
+    color: #FFFFFF;
+    display: none;
+    justify-content: center;
+}
+
+.propiedadesContenedorLogoMain{
+    display: flex;
+    align-items: center;
+}
+
+
+/* modal */
+
+.propiedadesModalSucursalesFlotante{
+    margin-left: -8rem;
+}
+
+.propiedadesBotonModalFlotanteSucursales{
+    background-color: #0168C7;
+    border-radius: 10px;
+}
+
+
+.anchuraModalFlotanteHr{
+    width: 16rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+/* modal */
+
+
+
+@media screen and (min-width: 0px) and (max-width: 700px){
+
+.propiedadesResponsividadUsuario{
+    display: none;
+}
+
+.propiedadesUsuarioSidebar{
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+}
+  
+}
+
+
+@media screen and (min-width: 0px) and (max-width: 600px){
+
+    .propiedadesResponsividadSucursal{
+        display: none;
+    }
+
+    .propiedadesSucursalSidebar{
+        color: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .ResponsividadTituloMain{
+        display: none;
+    }
+    
+    .propiedadesModalSucursalesFlotante{
+        margin-left: 0rem;
+    }
+
+      
+}

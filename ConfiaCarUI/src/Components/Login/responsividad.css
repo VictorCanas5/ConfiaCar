@@ -1,0 +1,22 @@
+.propiedes_fuente_titulo_login{
+    font-size: 3rem;
+}
+
+.propiedades_imagen_login{
+    width: 6rem;
+    height: 6rem;
+}
+
+@media screen and (min-width: 300px) and (max-width: 700px){
+
+    .propiedes_fuente_titulo_login{
+        font-size: 30px;
+    }
+
+
+    .propiedades_imagen_login{
+        width: 4rem;
+        height: 4rem;
+    }
+  
+}
