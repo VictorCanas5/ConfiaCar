@@ -33,7 +33,7 @@ namespace APICobranza.Controllers
         [HttpPost]
         [Route("GetClientes")]
         [Authorize]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetClientes()
         {
             try
             {
@@ -53,39 +53,39 @@ namespace APICobranza.Controllers
         [HttpPost]
         [Route("InsertCliente")]
         [Authorize]
-        public async Task<IActionResult> InsertUsers(APIConfiaCar.PeticionesRest.Clientes.ClientesInsert pardata)
+        public async Task<IActionResult> InsertCliente(APIConfiaCar.PeticionesRest.Clientes.ClientesInsert pardata)
         {
             try
             {
-                var consultaExistente = await DBContext.database.QueryAsync<Personas>("WHERE CorreoElectronico = @0", pardata.Correo).FirstOrDefaultAsync();
+                var consultaExistente = await DBContext.database.QueryAsync<Personas>("WHERE CorreoElectronico = @0", pardata.CorreoElectronico).FirstOrDefaultAsync();
                 
                 if (consultaExistente == null)
                 {
                     DateTime fechaNacimiento;
                     if (DateTime.TryParse(pardata.fechaNacimiento, out fechaNacimiento))
                     {
+                        // Ajustar la fecha de nacimiento a la zona horaria correcta
+                        fechaNacimiento = TimeZoneInfo.ConvertTimeToUtc(fechaNacimiento);
+
                         var ClienteNuevo = new DBContext.DBConfiaCar.General.Personas()
                         {
                             Nombre = pardata.nombre,
                             ApellidoPaterno = pardata.apellidoPaterno,
                             ApellidoMaterno = pardata.apellidoMaterno,
                             CreacionFecha = DateTime.Now,
-                            FechaNacimiento = fechaNacimiento, // Asignar la fecha de nacimiento convertida
+                            FechaNacimiento = fechaNacimiento, 
                             LugarNacimiento = pardata.lugarNacimiento,
                             CURP = pardata.curp,
                             RFC = pardata.rfc,
                             SexoID = pardata.sexoID,
                             EstadoCivilID = pardata.estadoCivilID,
-                            EscolaridadID = pardata.escolaridadID,
                             IngresosMensuales = pardata.ingresosMensuales,
                             TelefonoDomicilio = pardata.telefonoDomicilio,
-                            CorreoElectronico = pardata.Correo,
+                            CorreoElectronico = pardata.CorreoElectronico,
                             TelefonoMovil = pardata.telefonoMovil,
                             identificacionNumero = pardata.identificacionNumero,
-                            Observaciones = pardata.observaciones,
                             BuroInternoEstatusID = pardata.buroInternoEstatusID,
                             BloqueadoCliente = pardata.bloqueadoCliente,
-                            NombreConyuge = "N/A"                
                         };
                         
                         var insert = await DBContext.database.InsertAsync(ClienteNuevo);
@@ -169,12 +169,18 @@ namespace APICobranza.Controllers
                 persona.ApellidoMaterno = pardata.apellidoMaterno;
                 persona.ModificacionFecha = DateTime.Now;
                 
+                persona.ModificacionFecha = DateTime.UtcNow;
+
                 if (!string.IsNullOrEmpty(pardata.fechaNacimiento))
                 {
                     DateTime fechaNacimiento;
-                    if (DateTime.TryParseExact(pardata.fechaNacimiento, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
+                    if (DateTime.TryParseExact(pardata.fechaNacimiento, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
                     {
-                        persona.FechaNacimiento = fechaNacimiento;
+                        persona.FechaNacimiento = fechaNacimiento.ToUniversalTime();
+                    }
+                    else if (DateTime.TryParseExact(pardata.fechaNacimiento, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
+                    {
+                        persona.FechaNacimiento = fechaNacimiento.ToUniversalTime();
                     }
                     else
                     {
@@ -187,13 +193,11 @@ namespace APICobranza.Controllers
                 persona.RFC = pardata.rfc;
                 persona.SexoID = pardata.sexoID;
                 persona.EstadoCivilID = pardata.estadoCivilID;
-                persona.EscolaridadID = pardata.escolaridadID;
                 persona.IngresosMensuales = pardata.ingresosMensuales;
                 persona.TelefonoDomicilio = pardata.telefonoDomicilio;
-                persona.CorreoElectronico = pardata.Correo;
+                persona.CorreoElectronico = pardata.CorreoElectronico;
                 persona.TelefonoMovil = pardata.telefonoMovil;
                 persona.identificacionNumero = pardata.identificacionNumero;
-                persona.Observaciones = pardata.observaciones;
                 persona.BuroInternoEstatusID = pardata.buroInternoEstatusID;
                 persona.BloqueadoCliente = pardata.bloqueadoCliente;
 

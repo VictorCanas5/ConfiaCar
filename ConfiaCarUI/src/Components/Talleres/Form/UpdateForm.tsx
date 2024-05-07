@@ -8,14 +8,15 @@ import StepperComponent from "../../../global/Componentes/ScriptsStepper/Steper"
 import TextComponent from "../../../global/Componentes/TextComponent.tsx/TextComponent";
 import CheckComponent from "../../../global/Componentes/CheckComponent.tsx/CheckComponent";
 import CheckComponent2 from "../../../global/Componentes/CheckComponent.tsx/CheckComponent2";
-import { AutocompleteField } from "../../../global/Componentes/AutoCompleteField/AutoComplete";
 import Swal from 'sweetalert2';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { TimePicker } from 'antd';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es';
 
 type FormType = {
   Jwt:string,
-  Usuarios:any,
-  UsuarioID:any,
+  Talleres:any,
+  TallerID:number,
   idSocia?: number,
   Mostrar: boolean,
   fnCerrar(item: any): any,
@@ -44,18 +45,9 @@ const UpdateForm = (props: FormType) => {
 
 
   useEffect(() => {
-    console.log(props.data);
-    
   }, [])
-  const steps = ['Datos personales', 'Datos adicionales']
-  const options =  [
-    { 
-      value: 1, label: `COMPRADOR` 
-    },
-    {
-      value: 2, label: `VENDEDOR` 
-    }
-]
+  const steps = ['Datos Taller', 'Datos adicionales']
+
 
   return (
     <Formik
@@ -63,17 +55,16 @@ const UpdateForm = (props: FormType) => {
       innerRef={(ref) => (formikRef.current = ref)}
       enableReinitialize
       validationSchema={Yup.object().shape({
-        Correo: Yup.string().required("Campo obligatorio"),
-        celular: Yup.number().typeError('Debe ser un número').required('Campo obligatorio').positive('Debe ser un número positivo').integer('Debe ser un número entero'),
+
       })}
       onSubmit={(values, { resetForm }) => {
         
-      if(props.UsuarioID == 0){
+      if(props.TallerID == 0){
         
           console.log("estos son los valores:", values)
-          Funciones.InsertUsuario(props.Jwt,values)
+          Funciones.InsertTaller(props.Jwt,values)
           .then((res:any) => {
-              props.Usuarios();
+              props.Talleres();
               setMostrar(true)
               Swal.fire({
                 position: "center",       
@@ -90,7 +81,7 @@ const UpdateForm = (props: FormType) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: "Ya existe un usuario registrado con este correo",
+                title: "Algo salio mal",
                 showConfirmButton: false,
                 timer: 1000
             });
@@ -101,25 +92,22 @@ const UpdateForm = (props: FormType) => {
 
 
         const newDataUsuarios = props.data.map((item: any) => {
-          if (item.usuarioID === props.UsuarioID) {
+          if (item.tallerID === props.TallerID) {
               const nuevoNombre = `${values.nombre} ${values.apellidoPaterno} ${values.apellidoMaterno}`;
 
               return {
-                  ...item, 
+                  ...item,
                   masterUser: values.Master,
                   correoElectronico: values.Correo,
                   telefono: values.celular,
                   nombreCompleto: nuevoNombre, 
-                  rolID: values.rolID
               };
           }
           return item;
         });
 
-      props.setData(newDataUsuarios);
+      // props.setData(newDataUsuarios);
 
-      
-      
 
         Funciones.UpdateUsuario(props.Jwt,values)
         .then((res:any) => {
@@ -151,7 +139,7 @@ const UpdateForm = (props: FormType) => {
 
       }}
     >
-      
+
       {({ values, handleSubmit }) => (
         <Modal
           
@@ -167,7 +155,7 @@ const UpdateForm = (props: FormType) => {
         >
           <div>
             <strong style={{ fontSize: '2rem', margin: '1rem', color: '#c2346a' }}>
-              {props.UsuarioID == 0 ? "Alta de usuario" : "Modificar usuario"}
+              {props.TallerID == 0 ? "Alta Taller" : "Modificar Taller"}
             </strong>
           </div>
           <hr />
@@ -185,8 +173,8 @@ const UpdateForm = (props: FormType) => {
                 <div style={{ backgroundColor: '#f9f9f9', padding: '.7rem', borderRadius: '2rem' }}>
                   <div style={{ display: "flex", flexDirection:'column',justifyContent: 'space-between' }}>
                     <TextComponent id={"Nombre"} name={"nombre"} DefaultValue={props.Form.nombre} type={"text"}/>
-                    <TextComponent id={"Apellido paterno"} name={"apellidoPaterno"} DefaultValue={undefined} type={"text"}/>
-                    <TextComponent id={"Apellido materno"} name={"apellidoMaterno"} DefaultValue={undefined} type={"text"}/>
+                    <TextComponent id={"Direccion"} name={"direccion"} DefaultValue={undefined} type={"text"}/>
+                    <TextComponent id={"Telefono"} name={"telefono"} DefaultValue={undefined} type={"text"}/>
                   </div>
                 </div>
                 </Grow>
@@ -196,18 +184,26 @@ const UpdateForm = (props: FormType) => {
                 <Grow in={step == 1}>
                   <div style={{ backgroundColor: '#f9f9f9', padding: '.7rem', borderRadius: '2rem' }}>
                     <div style={{ display: "flex", flexDirection:'column',justifyContent: 'space-between' }}>
-                      <TextComponent id={"Correo"} name={"Correo"} DefaultValue={undefined} type={"text"}/>
-                      <TextComponent id={"Numero celular"} name={"celular"} DefaultValue={undefined} type={"text"}/>
-                      <AutocompleteField
-                      id={"rolID"}
-                      name={"rolID"}
-                      label="Rol Usuario" 
-                      defaultValue={{ value: 0, nombreCompleto: "", label: "Selecciona un rol" }}
-                      Data={options}
+                      <TextComponent id={"Contacto"} name={"contacto"} DefaultValue={undefined} type={"text"}/>
+
+                      <label htmlFor="horarioApertura" style={{ marginTop: '1rem' }}>Hora de apertura:</label>
+                      <TimePicker 
+                        id="horarioApertura" 
+                        name="horarioApertura" 
+                        defaultValue={dayjs()} 
+                        format="HH:mm" 
+                        placeholder="Selecciona hora de apertura" 
                       />
-                      <div style={{display:'flex', justifyContent:'center', margin:'1rem'}}>
-                          <CheckComponent2 name="Master" label="Master" values={props.Form.Master} />
-                      </div>
+
+                      <label htmlFor="horarioCierre" style={{ marginTop: '1rem' }}>Hora de cierre:</label>
+                      <TimePicker 
+                        id="horarioCierre" 
+                        name="horarioCierre" 
+                        defaultValue={dayjs()} 
+                        format="HH:mm" 
+                        placeholder="Selecciona hora de cierre" 
+                      />
+                      
                     </div>
                   </div>
                </Grow>

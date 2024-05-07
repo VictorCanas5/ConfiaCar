@@ -30,13 +30,10 @@ export const InsertCliente = (Jwt:string, Valores: {
   rfc: string,
   sexoID: string,
   estadoCivilID: string,
-  escolaridadID: number,
   ingresosMensuales: number,
   telefonoDomicilio: string,
-  Correo: string,
+  correoElectronico: string,
   telefonoMovil: string,
-  identificacionNumero: string,
-  observaciones: string,
   buroInternoEstatusID: number,
   bloqueadoCliente: boolean
 
@@ -67,13 +64,10 @@ export const UpdateCliente = (Jwt:string, Valores: {
   rfc: string,
   sexoID: string,
   estadoCivilID: string,
-  escolaridadID: number,
   ingresosMensuales: number,
   telefonoDomicilio: string,
-  Correo: string,
+  correoElectronico: string,
   telefonoMovil: string,
-  identificacionNumero: string,
-  observaciones: string,
   buroInternoEstatusID: number,
   bloqueadoCliente: boolean
 

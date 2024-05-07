@@ -351,9 +351,9 @@ export namespace DBConfiaCar_Catalogo {
       
         PlacasAnteriores?: string
       
-        Modelo?: string
-      
         Anio?: number
+      
+        Modelo?: string
       
         MarcaLogo?: any
       

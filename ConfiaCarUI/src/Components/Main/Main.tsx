@@ -28,33 +28,12 @@ type TypeSucursales = {
 const Main: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) => {
 
   const { logout, user, Jwt, role, status, isMaster} = useContext(AuthContext);
+
+  const username = JSON.parse(sessionStorage.getItem("user")!);
   
   const [anchorEl, setAnchorEl] = useState(null);
   const history : NavigateFunction = useNavigate();
   const [openMenu, setOpenMenu] = useState<boolean>(false)
-  const [sucursales, setSucursales] = useState<{ value: number; label: string; }[]>([]);
-  const [sucursalSeleccionadaLocal, setSucursalSeleccionadaLocal] = useState<{id: string | null; nombre: string | null;}>({ id: null, nombre: null });
-
-
-  // const SucursalesInfo = () : void => {
-  //   Funciones.GetSucursalesDisp()
-  //       .then((resp: ConfiaCar_dbo.ISucursales[]) => {
-  //         const options = resp.map((e: any) => {
-  //             return { value: e.sucursalID, label: `${e.nombreSucursal} - ${e.sucursalID}` };
-  //         });
-  //         setSucursales(options);
-  //       })
-  //       .catch((err: any) => {
-  //         console.error('Error al obtener sucursales',err)
-  //       });
-  // };  
-
-
-
-
-  const handleClick = (event: any) : void => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClose = () : void => {
     setAnchorEl(null);
@@ -69,14 +48,6 @@ const Main: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) => {
   const OpenMenu = () : void => { setOpenMenu(true) };
   const closeMenu = () : void=> { setOpenMenu(false) };
   const fnLogout = () : void => { history('/login'); logout() };
-  const fnChangeSucursal = () => {
-   
-   
-    window.location.reload();
-
-    history('/main');
-  };
-
 
   const theme : ThemeOptions | undefined = createTheme({
     palette: {
@@ -88,7 +59,7 @@ const Main: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) => {
 
 
   useEffect(() => {
-
+    console.log("este es mi nombre de usuario: ", username.userID.nombreusuario)
   }, []);
 
   const styles = {
@@ -151,7 +122,7 @@ const Main: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) => {
 
                 <div className="propiedadesSucursal propiedadesResponsividadUsuario">
                   <AccountCircleIcon fontSize="small" style={{marginRight:'0.25rem', marginBottom:'0.35rem'}} />
-                  <Typography  variant="subtitle2" gutterBottom>Nombre Usuario</Typography >
+                  <Typography  variant="subtitle2" gutterBottom>{username.userID.nombreusuario}</Typography >
                 </div>
 
                 <div style={{ margin: '1rem', display: 'flex' }}>
@@ -212,7 +183,3 @@ const Main: React.FC<TypeSucursales> = ({ setSucursalSeleccionada }) => {
 }
 
 export default Main;
-
-
-
-

@@ -97,12 +97,12 @@ namespace DBContext.DBConfiaCar.Catalogo
         public string PlacasAnteriores { get; set; }
       
         
-        [Column("Modelo")]
-        public string Modelo { get; set; }
-      
-        
         [Column("Anio")]
         public int? Anio { get; set; }
+      
+        
+        [Column("Modelo")]
+        public string Modelo { get; set; }
       
         
         [Column("MarcaLogo")]

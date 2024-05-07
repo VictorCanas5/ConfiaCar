@@ -38,7 +38,6 @@ export const InsertUsuario = (Jwt:string, Valores: {
             }
           })
         .then((res: AxiosResponse<DBConfiaCar_Seguridad.IUsuarios>) => {
-          
                 resolver(res);
 
             }).catch(err => {

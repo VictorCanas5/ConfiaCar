@@ -20,13 +20,11 @@ namespace APIConfiaCar.PeticionesRest.Clientes
         public string? rfc {get; set;}
         public string? sexoID {get; set;}
         public string? estadoCivilID {get; set;}
-        public int? escolaridadID {get; set;}
         public decimal ingresosMensuales {get; set;}
         public string? telefonoDomicilio {get; set;}
-        public string? Correo {get; set;}
+        public string? CorreoElectronico {get; set;}
         public string? telefonoMovil {get; set;}
         public string? identificacionNumero {get; set;}
-        public string? observaciones {get; set;}
         public int buroInternoEstatusID {get; set;}
         public Boolean bloqueadoCliente {get; set;}
 
@@ -45,13 +43,11 @@ namespace APIConfiaCar.PeticionesRest.Clientes
         public string? rfc {get; set;}
         public string? sexoID {get; set;}
         public string? estadoCivilID {get; set;}
-        public int? escolaridadID {get; set;}
         public decimal ingresosMensuales {get; set;}
         public string? telefonoDomicilio {get; set;}
-        public string? Correo {get; set;}
+        public string? CorreoElectronico {get; set;}
         public string? telefonoMovil {get; set;}
         public string? identificacionNumero {get; set;}
-        public string? observaciones {get; set;}
         public int buroInternoEstatusID {get; set;}
         public Boolean bloqueadoCliente {get; set;}
 

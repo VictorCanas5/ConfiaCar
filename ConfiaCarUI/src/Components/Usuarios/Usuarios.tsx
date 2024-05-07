@@ -3,7 +3,6 @@ import MUIDataTable from "mui-datatables";
 import { useState, useEffect } from "react";
 import * as Funciones from "./Funciones";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import UpdateForm from "./Form/UpdateForm";
 import AddIcon from '@mui/icons-material/Add';
 import { Create } from "@mui/icons-material";
 import CameraIcon from '@mui/icons-material/Camera';

@@ -41,11 +41,11 @@ const Login = () => {
 
         Funciones.GetLogin({ Usuario, Password })
         .then((res: any) => {
-            /*******Se establecen valores en el context*********** */
+            /**********************Se establecen valores en el context****************************** */
             console.log("esta es la data: ", res.data)
-            /***************************** */
+            /*************************************************************************************** */
 
-            login(/* ${res.data.consulta.nombreusuario}
+            login(/* `${res.data.consulta.nombreusuario}`
             , */res.data.tokenGenerado
             ,res.data.rol
             ,res.data.estatus
@@ -53,7 +53,7 @@ const Login = () => {
             ,res.data.consulta
             ,res.data.cambioContra
             );
-    /***************************** */
+    /*************************************************************************************** */
             setLoading(false);
             if (res.data.cambioContra === null) {
                 history('/main');
@@ -103,7 +103,7 @@ const Login = () => {
     >
 
       {({ values, handleSubmit }) => (
-        <div className="bg_animate animate_animated animate_fadeIn">
+        <div className="bg_animate animate__animated animate__fadeIn">
 
             <Form    className="cont1" style={{ display: 'flex', justifyContent: 'space-around', marginTop: '3rem' }}>
 
